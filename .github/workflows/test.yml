@@ -33,7 +33,7 @@ jobs:
         run: choco install shellcheck
       - name: Install Shellcheck (Linux)
         if: ${{ runner.os == 'Linux' }}
-        run: apt install shellcheck
+        run: sudo apt install shellcheck
       - name: Install Shellcheck (macOS)
         if: ${{ runner.os == 'macOS' }}
         run: brew install shellcheck
