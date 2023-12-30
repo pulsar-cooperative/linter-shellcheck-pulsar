@@ -13,7 +13,7 @@
     "language-shellscript:grammar-used"
   ],
   "scripts": {
-    "test": "apm test",
+    "test": "ppm test",
     "lint": "eslint ."
   },
   "configSchema": {

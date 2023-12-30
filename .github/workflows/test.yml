@@ -1,0 +1,45 @@
+name: Test
+
+on:
+  - push
+  - pull_request
+
+jobs:
+  test:
+    name: Test
+    strategy:
+      matrix:
+        os: [ubuntu-20.04, macos-latest, windows-2019]
+      fail-fast: false
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout the Latest Package Code
+        uses: actions/checkout@v3
+      - name: Setup Pulsar Editor
+        uses: pulsar-edit/action-pulsar-dependency@v3.3
+      - name: Install dependencies (Windows)
+        if: ${{ runner.os == 'Windows' }}
+        run: ppm install --verbose
+      - name: Install Dependencies (*nix)
+        if: ${{ runner.os != 'Windows' }}
+        run: pulsar --package install --verbose
+
+      # Here we differ from the template files, since we need to install
+      # shellcheck, as it's required by this package
+      # https://github.com/koalaman/shellcheck
+      - name: Install Shellcheck (Windows)
+        if: ${{ runner.os == 'Windows' }}
+        run: choco install shellcheck
+      - name: Install Shellcheck (Linux)
+        if: ${{ runner.os == 'Linux' }}
+        run: apt install shellcheck
+      - name: Install Shellcheck (macOS)
+        if: ${{ runner.os == 'macOS' }}
+        run: brew install shellcheck
+      # <END Template Differ>
+
+      - name: Run the headless Pulsar Tests
+        uses: coactions/setup-xvfb@v1.0.1
+        with:
+          run: pulsar --test spec
