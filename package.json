@@ -1,10 +1,10 @@
 {
-  "name": "linter-shellcheck",
+  "name": "linter-shellcheck-pulsar",
   "main": "./lib/main.js",
   "version": "1.6.0",
   "private": true,
   "description": "Lint Bash on the fly, using shellcheck",
-  "repository": "https://github.com/AtomLinter/linter-shellcheck",
+  "repository": "https://github.com/pulsar-cooperative/linter-shellcheck-pulsar",
   "license": "MIT",
   "engines": {
     "atom": ">=1.4.0 <2.0.0"
