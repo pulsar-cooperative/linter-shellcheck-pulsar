@@ -36,7 +36,7 @@ describe('The ShellCheck provider for Linter', () => {
   });
 
   it('handles messages from ShellCheck', async () => {
-    const expectedExcerpt = 'Tips depend on target shell and yours is unknown. Add a shebang. [SC2148]';
+    const expectedExcerpt = 'Tips depend on target shell and yours is unknown. Add a shebang or a `shell` directive. [SC2148]';
     const expectedURL = 'https://github.com/koalaman/shellcheck/wiki/SC2148';
     const editor = await atom.workspace.open(badPath);
     const messages = await lint(editor);
