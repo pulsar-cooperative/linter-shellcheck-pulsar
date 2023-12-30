@@ -1,4 +1,4 @@
-# linter-shellcheck
+# linter-shellcheck-pulsar
 
 <!-- Pulsar Cooperative Package Repository Template, place underneath the first h1 heading in the original readme -->
 
@@ -28,14 +28,14 @@ your system. To install `shellcheck`, follow the guide on
 ### Plugin installation
 
 ```ShellSession
-apm install linter-shellcheck
+ppm install linter-shellcheck-pulsar
 ```
 
 ## Settings
 
-You can configure linter-shellcheck through Atom's Settings menu. If you
+You can configure linter-shellcheck-pulsar through Pulsar's Settings menu. If you
 instead prefer editing the configuration by hand you can get to that by editing
-`~/.atom/config.cson` (choose Open Your Config in Atom menu). The settings
+`~/.atom/config.cson` (choose Open Your Config in Pulsar menu). The settings
 available are:
 
 -   `shellcheckExecutablePath`: The full path to the `shellcheck` executable.
