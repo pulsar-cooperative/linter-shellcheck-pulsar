@@ -1,0 +1,17 @@
+name: Release New Version
+
+on:
+  workflow_dispatch:
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Publish Version to PPR
+        if: ${{ vars.PUBLISHED == 'true' }}
+        run: |
+          curl -X POST \
+            -H "Authorization: ${{ secrets.PPR_AUTH }}" \
+            https://api.pulsar-edit.dev/api/packages/${{ github.event.repository.name }}/versions

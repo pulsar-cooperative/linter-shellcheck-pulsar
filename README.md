@@ -1,4 +1,14 @@
-# linter-shellcheck
+# linter-shellcheck-pulsar
+
+<!-- Pulsar Cooperative Package Repository Template, place underneath the first h1 heading in the original readme -->
+
+> [!NOTE]
+> This package was originally created by AtomLinter and has now been forked under the [`pulsar-cooperative`](https://github.com/pulsar-cooperative) organization.
+> By forking this package we hope to allow new maintainers to work on this package as needed, without being limited by its previous archived status, helping to ensure this package stays up to date and functional for as long as possible without the huge responsibility implied by forking and maintaining this under a personal account.
+>
+> For more info on the Pulsar Cooperative initiative please read [the documentation](https://github.com/pulsar-cooperative/.github/blob/main/CONTRIBUTING.md).
+
+<!-- Original Readme to follow -->
 
 This linter plugin for [Linter][linter] provides an interface to
 [shellcheck][shellcheck]. It will be used with files that have the "Shell"
@@ -18,14 +28,14 @@ your system. To install `shellcheck`, follow the guide on
 ### Plugin installation
 
 ```ShellSession
-apm install linter-shellcheck
+ppm install linter-shellcheck-pulsar
 ```
 
 ## Settings
 
-You can configure linter-shellcheck through Atom's Settings menu. If you
+You can configure linter-shellcheck-pulsar through Pulsar's Settings menu. If you
 instead prefer editing the configuration by hand you can get to that by editing
-`~/.atom/config.cson` (choose Open Your Config in Atom menu). The settings
+`~/.atom/config.cson` (choose Open Your Config in Pulsar menu). The settings
 available are:
 
 -   `shellcheckExecutablePath`: The full path to the `shellcheck` executable.
@@ -41,7 +51,7 @@ available are:
     [`source=`](https://github.com/koalaman/shellcheck/wiki/Directive#source)
     directive are relative to the project root or the file (default: false, for
     file-relative)
-    
+
     -   If true, ShellCheck's working directory
         will be the project's root directory.  Any `source=` directives will be
         interpreted relative to the project root.

@@ -1,0 +1,23 @@
+name: Bump Package Version
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  workflow_dispatch:
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+    - name: Bump Version
+      if: ${{ vars.PUBLISHED == 'true' }}
+      uses: google-github-actions/release-please-action@v3
+      with:
+        release-type: node
+        package-name: ${{ vars.REPO_NAME }}
+        token: ${{ secrets.REPO_TOKEN }}

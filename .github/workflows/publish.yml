@@ -1,0 +1,46 @@
+name: Publish Package for the First Time
+
+on:
+  workflow_dispatch:
+
+jobs:
+  publish:
+    name: Publish
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+    # We need to have at least one tag available prior to publication. So we will publish the first release
+    # during publication.
+    - name: Checkout the Latest Package Code
+      uses: actions/checkout@v3
+    - name: Get Version
+      id: version
+      run: node -p "'version=' + require('./package.json').version" >> "$GITHUB_OUTPUT"
+    - name: Create GitHub Release
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: ${{ steps.version.outputs.version }}
+    # Now this is what's needed to actually publish the package to PPR
+    - name: Publish Package to PPR
+      if: ${{ vars.PUBLISHED != 'true' }}
+      run: |
+        curl -X POST -H \
+          "Authorization: ${{ secrets.PPR_AUTH }}" \
+          https://api.pulsar-edit.dev/api/packages?repository=${{ github.repository }}
+    - name: Create Repository's 'PUBLISH' Var
+      run: |
+        curl -L \
+          -X POST \
+          -H "Accept: application/vnd.github+json" \
+          -H "Authorization: Bearer ${{ secrets.REPO_TOKEN }}" \
+          -H "X-GitHub-Api-Version: 2022-11-28" \
+          https://api.github.com/repos/pulsar-cooperative/${{ vars.REPO_NAME }}/actions/variables \
+          -d '{"name":"PUBLISHED","value":"true"}'
+    - name: Create Rebrand Issue in Repo
+      uses: JasonEtco/create-an-issue@v2
+      env:
+        GITHUB_TOKEN: ${{ secrets.REPO_TOKEN }}
+      with:
+        filename: .github/rebrand-issue-template.md
