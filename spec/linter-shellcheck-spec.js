@@ -19,7 +19,7 @@ describe('The ShellCheck provider for Linter', () => {
 
     // Info about this beforeEach() implementation:
     // https://github.com/AtomLinter/Meta/issues/15
-    const activationPromise = atom.packages.activatePackage('linter-shellcheck');
+    const activationPromise = atom.packages.activatePackage('linter-shellcheck-pulsar');
 
     await atom.packages.activatePackage('language-shellscript');
     await atom.workspace.open(cleanPath);
@@ -36,14 +36,17 @@ describe('The ShellCheck provider for Linter', () => {
   });
 
   it('handles messages from ShellCheck', async () => {
-    const expectedExcerpt = 'Tips depend on target shell and yours is unknown. Add a shebang. [SC2148]';
+    const expectedExcerpt = [
+      "Tips depend on target shell and yours is unknown. Add a shebang. [SC2148]",
+      "Tips depend on target shell and yours is unknown. Add a shebang or a 'shell' directive. [SC2148]"
+    ];
     const expectedURL = 'https://github.com/koalaman/shellcheck/wiki/SC2148';
     const editor = await atom.workspace.open(badPath);
     const messages = await lint(editor);
 
     expect(messages.length).toBe(1);
     expect(messages[0].severity).toBe('error');
-    expect(messages[0].excerpt).toBe(expectedExcerpt);
+    expect(expectedExcerpt.includes(messages[0].excerpt)).toBe(true);
     expect(messages[0].url).toBe(expectedURL);
     expect(messages[0].location.file).toBe(badPath);
     expect(messages[0].location.position).toEqual([[0, 0], [0, 4]]);
@@ -51,19 +54,19 @@ describe('The ShellCheck provider for Linter', () => {
 
   describe('implements useProjectCwd and', () => {
     beforeEach(async () => {
-      atom.config.set('linter-shellcheck.userParameters', '-x');
-      atom.config.set('linter-shellcheck.enableNotice', true);
+      atom.config.set('linter-shellcheck-pulsar.userParameters', '-x');
+      atom.config.set('linter-shellcheck-pulsar.enableNotice', true);
     });
 
     it('uses file-relative source= directives by default', async () => {
-      atom.config.set('linter-shellcheck.useProjectCwd', false);
+      atom.config.set('linter-shellcheck-pulsar.useProjectCwd', false);
       const editor = await atom.workspace.open(sourceFileRelativePath);
       const messages = await lint(editor);
       expect(messages.length).toBe(0);
     });
 
     it('errors for file-relative source= path with useProjectCwd = true', async () => {
-      atom.config.set('linter-shellcheck.useProjectCwd', true);
+      atom.config.set('linter-shellcheck-pulsar.useProjectCwd', true);
       const editor = await atom.workspace.open(sourceFileRelativePath);
       const messages = await lint(editor);
       expect(messages.length).toBe(1);
@@ -71,14 +74,14 @@ describe('The ShellCheck provider for Linter', () => {
     });
 
     it('uses project-relative source= directives via setting (based at fixtures/)', async () => {
-      atom.config.set('linter-shellcheck.useProjectCwd', true);
+      atom.config.set('linter-shellcheck-pulsar.useProjectCwd', true);
       const editor = await atom.workspace.open(sourceProjectRelativePath);
       const messages = await lint(editor);
       expect(messages.length).toBe(0);
     });
 
     it('errors for project-relative source= path with useProjectCwd = false (based at fixtures/)', async () => {
-      atom.config.set('linter-shellcheck.useProjectCwd', false);
+      atom.config.set('linter-shellcheck-pulsar.useProjectCwd', false);
       const editor = await atom.workspace.open(sourceProjectRelativePath);
       const messages = await lint(editor);
       expect(messages.length).toBe(1);
